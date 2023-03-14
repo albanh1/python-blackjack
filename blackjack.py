@@ -1,3 +1,5 @@
+
+###
 ###   Blackjack
 ###   ----------
 ###   A simplified text-based blackjack game
@@ -30,6 +32,7 @@
 ###   new hands.
 ###
 ###   For those of you familiar with the game, there is no "Insurance" feature yet.
+###
 
 import random
 import time
@@ -459,11 +462,15 @@ def play_blackjack():
                         hand.check_is_bust()
                     # split
                     else:
-                        print(f'You split hand {hand.name}...')
-                        split_hands = p1.split_hand(i+1, hand)
-                        print(f'Hand {split_hands[0].name} - {split_hands[0]}')
-                        print(f'Hand {split_hands[1].name} - {split_hands[1]}')
-                        break
+                        # check enough money to match original bet
+                        if p1.total_money >= hand.total_bet:
+                            print(f'You split hand {hand.name}...')
+                            split_hands = p1.split_hand(i+1, hand)
+                            print(f'Hand {split_hands[0].name} - {split_hands[0]}')
+                            print(f'Hand {split_hands[1].name} - {split_hands[1]}')
+                            break
+                        else:
+                            print('You dont have enough money to match your original bet.')
             i += 1
         
         # small delay
