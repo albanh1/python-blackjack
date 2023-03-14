@@ -457,8 +457,10 @@ def play_blackjack():
                         print(f'Final hand {hand.name} - {hand}')
                     # double down
                     elif result == Actions.dd:
+                        p1.update_money(-hand.total_bet)
                         hand.double_down(new_deck.deal_one())
-                        print(f'Double down! Bet increased to £{hand.total_bet}. Final hand {hand.name} - {hand}')
+                        print(f'Double down! Bet increased to £{hand.total_bet}')
+                        print(f'Final hand {hand.name} - {hand}')
                         hand.check_is_bust()
                     # split
                     else:
