@@ -457,11 +457,15 @@ def play_blackjack():
                         print(f'Final hand {hand.name} - {hand}')
                     # double down
                     elif result == Actions.dd:
-                        p1.update_money(-hand.total_bet)
-                        hand.double_down(new_deck.deal_one())
-                        print(f'Double down! Bet increased to £{hand.total_bet}')
-                        print(f'Final hand {hand.name} - {hand}')
-                        hand.check_is_bust()
+                        # check enough money to dd
+                        if p1.total_money >= hand.total_bet:
+                            p1.update_money(-hand.total_bet)
+                            hand.double_down(new_deck.deal_one())
+                            print(f'Double down! Bet increased to £{hand.total_bet}')
+                            print(f'Final hand {hand.name} - {hand}')
+                            hand.check_is_bust()
+                        else:
+                            print('You dont have enough money to match your original bet.')
                     # split
                     else:
                         # check enough money to match original bet
