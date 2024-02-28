@@ -9,10 +9,17 @@ A simplified text-based blackjack game coded in python.
 ## Blackjack Rules
 The aim is to have a hand with a total value higher than the dealer’s without going over 21. Kings, Queens, Jacks and Tens are worth a value of 10. An Ace has the value of 1 or 11. The remaining cards are counted at face value.
 
-Place a bet using the input provided. You are dealt two cards whilst the dealer is dealt one face up. If your first 2 cards add up to 21 (an Ace and a card valued 10), that’s Blackjack! If you have any other total, decide whether you wish to "Hit" or "Stand". You can continue to draw cards until you are happy with your hand.
+How it works:
+ - Place a bet using the input provided.
+ - You are dealt two cards whilst the dealer is dealt one face up.
+ - If your first 2 cards add up to 21 (an Ace and a card valued 10), that’s Blackjack and you win!
+ - If you have any other total, decide whether you wish to "Hit" or "Stand". You can continue to draw cards until you are happy with your hand.
+ - If your hand total goes above 21, you lose.
+ - After you "Stand", its the dealer's turn to draw cards.
+ - The dealer will continue to draw cards until their total goes above 16.
 
-You may "Double Down” your original stake on any two-card combination, however, you will only receive one more card. 
-
-You can also “Split” any pair (including any two cards with a value of 10) by placing an additional bet equal to your original. You will then be dealt an additional card to each of your split cards to create two new hands.
+You can also:
+ - "Double Down” your original stake on any two-card combination, however, you will only receive one more card.
+ - “Split” any pair (including any two cards with a value of 10) by placing an additional bet equal to your original. You will then be dealt an additional card to each of your split cards to create two new hands.
 
 For those of you familiar with the game, there is no "Insurance" feature yet.
