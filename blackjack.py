@@ -1,44 +1,12 @@
-
-###
-###   Blackjack
-###   ----------
-###   A simplified text-based blackjack game
-###
-###   How to run the code
-###   -------------------
-###   1. Copy all code in this file.
-###   2. Open https://www.programiz.com/python-programming/online-compiler/
-###      (or any other web-based python compiler)
-###   3. Paste the code in the main.py tab
-###   4. Click "Run" and follow the text prompts
-###
-###   How-To / Rules:
-###   ---------------
-###   The aim is to have a hand with a total value higher than the dealer’s without 
-###   going over 21. Kings, Queens, Jacks and Tens are worth a value of 10. An Ace has 
-###   the value of 1 or 11. The remaining cards are counted at face value.
-###
-###   Place a bet using the input provided. You are dealt two cards whilst the dealer 
-###   is dealt one face up. If your first 2 cards add up to 21 (an Ace and a card valued 10), 
-###   that’s Blackjack! If you have any other total, decide whether you wish to ‘hit’ or 
-###   ‘stand’. You can continue to draw cards until you are happy with your hand.
-###
-###   You may "Double Down” your original stake on any two-card combination, however, 
-###   you will only receive one more card. 
-###
-###   You can also “Split” any pair (including 
-###   any two cards with a value of 10) by placing an additional bet equal to your original. 
-###   You will then be dealt an additional card to each of your split cards to create two 
-###   new hands.
-###
-###   For those of you familiar with the game, there is no "Insurance" feature yet.
-###
-
 import random
 import time
 from enum import Enum
 
-### constants to define a deck of cards
+
+#################################################################
+###
+###   Constants
+###
 
 values_ace_high = {
     'Two': 2,
@@ -124,18 +92,26 @@ class Card():
 class Deck():
     def __init__(self):
         self.all_cards = []
-        for suit in suits:
-            for rank in ranks:
-                self.all_cards.append(Card(suit,rank,False))
+        self.cards_remaining = 10 * 52
+        for x in range(10):
+            for suit in suits:
+                for rank in ranks:
+                    self.all_cards.append(Card(suit,rank,False))
     
     def shuffle_deck(self):
         random.shuffle(self.all_cards)
         
     def deal_one(self, reveal=True):
+        cards_remaining -=1
         if reveal:
             return self.all_cards.pop().reveal()
         else:
             return self.all_cards.pop()
+    
+    def check_needs_reshuffling(self, hands_in_play):
+        upper_bound = 1 + len(hands_in_play)
+        return self.cards_remaining < upper_bound * 21
+        
 
 
 #################################################################
@@ -381,8 +357,8 @@ def play_blackjack():
     while game_on: 
         
         # instantiate deck and shuffle it
-        new_deck = Deck()
-        new_deck.shuffle_deck()
+        deck = Deck()
+        deck.shuffle_deck()
         
         # reset player hands
         p1.hands = []
@@ -406,14 +382,14 @@ def play_blackjack():
         
         # deal initial cards
         for hand in p1.hands:
-            hand.hit(new_deck.deal_one())
-            hand.hit(new_deck.deal_one())
+            hand.hit(deck.deal_one())
+            hand.hit(deck.deal_one())
             print(f'Hand {hand.name} - {hand}')
 
         # instantiate dealer hand and deal initial cards
         dealer_hand = Hand(0, 0)
-        dealer_hand.hit(new_deck.deal_one())
-        dealer_hand.hit(new_deck.deal_one(reveal=False))
+        dealer_hand.hit(deck.deal_one())
+        dealer_hand.hit(deck.deal_one(reveal=False))
         print(f'Dealer hand - {dealer_hand}')
 
         # check player blackjack
@@ -539,6 +515,10 @@ def play_blackjack():
             p1.update_money(hand.settle_amount())
 
             print(settle_message(hand))
+        
+        # check if deck needs reshuffling
+        if deck.check_needs_reshuffling():
+            deck = Deck()
         
         # if no money left then end the game
         if p1.total_money < 50:
